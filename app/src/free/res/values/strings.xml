@@ -1,0 +1,4 @@
+<resources>
+	<string name="greetings">This is the free, ad supported version.</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+</resources>
