@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.jst.displayjokelibrary.DisplayActivity;
@@ -26,6 +27,8 @@ import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private ProgressBar mLoadingIndicator;
 
     @Nullable
     private JokeIdlingResource mIdlingResource;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
 
         Toast.makeText(this, R.string.greetings, Toast.LENGTH_SHORT).show();
     }
@@ -89,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mLoadingIndicator.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected String doInBackground(Void... voids) {
             if (myApiService == null) {  // Only do this once
                 MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
@@ -113,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String joke) {
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (mIdlingResource != null) {
                 mIdlingResource.setIdleState(true);
             }
