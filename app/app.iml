@@ -148,6 +148,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/reports" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 27 Platform" jdkType="Android SDK" />
@@ -201,20 +202,6 @@
     <orderEntry type="library" name="Gradle: com.google.http-client:google-http-client-android:1.23.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.core:common:1.1.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava-jdk5:17.0@jar" level="project" />
-    <orderEntry type="module" module-name="displayjokelibrary" />
-    <orderEntry type="module" module-name="jokesLibrary" />
-    <orderEntry type="module" module-name="displayjokelibrary" />
-    <orderEntry type="module" module-name="jokesLibrary" />
-    <orderEntry type="module" module-name="displayjokelibrary" />
-    <orderEntry type="module" module-name="jokesLibrary" />
-    <orderEntry type="module" module-name="displayjokelibrary" />
-    <orderEntry type="module" module-name="jokesLibrary" />
-    <orderEntry type="module" module-name="displayjokelibrary" />
-    <orderEntry type="module" module-name="jokesLibrary" />
-    <orderEntry type="module" module-name="displayjokelibrary" />
-    <orderEntry type="module" module-name="jokesLibrary" />
-    <orderEntry type="module" module-name="displayjokelibrary" />
-    <orderEntry type="module" module-name="jokesLibrary" />
     <orderEntry type="module" module-name="displayjokelibrary" />
     <orderEntry type="module" module-name="jokesLibrary" />
   </component>
