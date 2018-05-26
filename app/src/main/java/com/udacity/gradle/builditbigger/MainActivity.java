@@ -1,6 +1,5 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,11 +23,10 @@ import com.udacity.gradle.builditbigger.IdlingResource.JokeIdlingResource;
 import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    private ProgressBar mLoadingIndicator;
 
     @Nullable
     private JokeIdlingResource mIdlingResource;
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
 
         Toast.makeText(this, R.string.greetings, Toast.LENGTH_SHORT).show();
     }
@@ -78,14 +75,14 @@ public class MainActivity extends AppCompatActivity {
         new JokeAsyncTask(this, mIdlingResource).execute();
     }
 
-    private class JokeAsyncTask extends AsyncTask<Void, Void, String> {
+    private static class JokeAsyncTask extends AsyncTask<Void, Void, String> {
 
+        private WeakReference<MainActivity> mActivityWeakReference;
         private MyApi myApiService = null;
-        private Context mContext;
         JokeIdlingResource mIdlingResource;
 
-        public JokeAsyncTask(Context context, final JokeIdlingResource idlingResource) {
-            mContext = context;
+        public JokeAsyncTask(MainActivity activity, final JokeIdlingResource idlingResource) {
+            mActivityWeakReference = new WeakReference<>(activity);
             mIdlingResource = idlingResource;
             if (mIdlingResource != null) {
                 mIdlingResource.setIdleState(false);
@@ -95,7 +92,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
+            MainActivity activity = mActivityWeakReference.get();
+            if (activity == null || activity.isFinishing()) return;
+
+            ProgressBar loadingIndicator = activity.findViewById(R.id.pb_loading_indicator);
+            loadingIndicator.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -123,13 +124,20 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String joke) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (mIdlingResource != null) {
                 mIdlingResource.setIdleState(true);
             }
-            Intent myIntent = new Intent(mContext, DisplayActivity.class);
+
+            // get a reference to the activity if it is still there
+            MainActivity activity = mActivityWeakReference.get();
+            if (activity == null || activity.isFinishing()) return;
+
+            ProgressBar loadingIndicator = activity.findViewById(R.id.pb_loading_indicator);
+            loadingIndicator.setVisibility(View.INVISIBLE);
+
+            Intent myIntent = new Intent(activity, DisplayActivity.class);
             myIntent.putExtra(DisplayActivity.JOKE_KEY, joke);
-            startActivity(myIntent);
+            activity.startActivity(myIntent);
         }
     }
 
